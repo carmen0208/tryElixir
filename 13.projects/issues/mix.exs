@@ -14,7 +14,7 @@
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :httpoison]]
   end
 
   # Dependencies can be Hex packages:
@@ -33,4 +33,6 @@
       { :httpoison, "~> 0.8"}
     ]
   end
-end
+  #iex -S mix
+  #Issues.GithubIssues.fetch("elixir-lang", "elixir")
+ end
