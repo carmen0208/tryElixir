@@ -26,7 +26,11 @@
   #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
   #
   # Type "mix help deps" for more examples and options
+  # mix deps
+  # mix deps.get
   defp deps do
-    []
+    [
+      { :httpoison, "~> 0.8"}
+    ]
   end
 end
