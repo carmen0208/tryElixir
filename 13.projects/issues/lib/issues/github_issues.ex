@@ -1,18 +1,25 @@
 defmodule Issues.GithubIssues do 
-   @user_agent  [ {"User-agent", "Elixir dave@pragprog.com"} ]
+
+  require Logger
+
+  @user_agent  [ {"User-agent", "Elixir dave@pragprog.com"} ]
 
   def fetch(user, project) do
+    Logger.info "Fetching user #{user}'s project #{project}"
     issues_url(user, project)
     |> HTTPoison.get(@user_agent)
     |> handle_response
     #HTTPoison.get("#{Application.get_env(:issues, :github_url)}/repos/#{user}/#{project}/issues",@user_agent).body
   end
    def handle_response({:ok, %{status_code: 200, body: body}}) do
-    { :ok, Poison.Parser.parse!(body) }
+    Logger.info "Successful response"
+    Logger.debug fn -> inspect(body) end
+    { :ok, Poison.Parser.parse!(body) }   
     #{:ok, body}
   end
 
-  def handle_response({_, %{status_code: _, body: body}}) do
+  def handle_response({_, %{status_code: status, body: body}}) do
+    Logger.error "Error #{status} returned"
     { :error, Poison.Parser.parse!(body) }
     #{:error, body}
   end
