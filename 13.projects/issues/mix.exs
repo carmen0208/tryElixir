@@ -3,6 +3,7 @@
 
   def project do
     [app: :issues,
+     escript: escript_config,
      version: "0.1.0",
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
@@ -33,6 +34,10 @@
       { :httpoison, "~> 0.8"},
       { :poison, "~> 1.5"}
     ]
+  end
+
+  defp escript_config do
+    [ main_module: Issues.CLI ]
   end
   #iex -S mix
   #Issues.GithubIssues.fetch("elixir-lang", "elixir")

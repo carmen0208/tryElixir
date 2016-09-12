@@ -1,5 +1,10 @@
-# Issues
+## Get Example Data from Command Line:
+```ruby
+iex -S mix
 
+>Issues.CLI.process {"elixir-lang","elixir",5}
+```
+# Issues 
 **TODO: Add description**
 
 ## Installation
