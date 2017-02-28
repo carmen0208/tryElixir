@@ -17,7 +17,7 @@ defmodule Schizo do
     Removes vowels from every other word in a sentence, Example:
 
     iex> Schizo.unvowel("you are silly")
-    "you r silly"
+    "you arr silly"
   """
   def unvowel(string) do
     transformed_every_other_word(string, &unvoweler/1)
