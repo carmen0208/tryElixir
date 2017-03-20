@@ -173,3 +173,28 @@
    iex(30)> Enum.join([1,2,3])
    # "123"
    ```
+
+* map
+* map_join
+* map_reduce
+* max
+* max_by
+* member?
+* min
+* min_by
+* partition
+* reduce
+* reject
+* reverse
+* shuffle
+* slice
+* sort
+* split
+* split_while
+* take
+* take_every
+* take_while
+* to_list
+* uniq
+* with_index
+* zip
