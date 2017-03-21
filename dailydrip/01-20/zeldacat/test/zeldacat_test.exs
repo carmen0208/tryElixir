@@ -5,7 +5,11 @@ defmodule Entity do
   end
 
   def add_component(pid, component, args) do 
-    :gen_event.add_handle(pid, component, args)
+    :gen_event.add_handler(pid, component, args)
+  end
+
+  def notify(pid, event) do 
+    :gen_event.notify(pid, event)
   end
 end
 
@@ -20,9 +24,18 @@ defmodule HealthComponent do
   def alive?(entity) do 
     :gen_event.call(entity, HealthComponent, :alive?)
   end
+
   ### GenEvent API
   def init(hp) do 
     {:ok, hp}
+  end
+
+  def handle_event({:hit, amount}, hp) do 
+    {:ok, hp-amount}
+  end
+
+  def handle_event({:heal, amount}, hp) do 
+    {:ok, hp + amount}
   end
 
   def handle_call(:get_hp, hp) do 
