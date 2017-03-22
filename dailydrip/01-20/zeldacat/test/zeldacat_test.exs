@@ -47,6 +47,52 @@ defmodule HealthComponent do
   end
 
 end
+
+defmodule XYComponent do 
+  use GenEvent
+
+  def get_position(entity) do 
+    :gen_event.call(entity, XYComponent, :get_position)
+  end
+
+  ### GemEvent API
+  def init(position) do 
+    {:ok, position}
+  end
+
+  def handle_call(:get_position, position) do 
+    {:ok, position, position}
+  end
+
+  def handle_event({:move, {:y, new_y}}, {x, _}) do 
+    {:ok, {x, new_y}}
+  end
+
+  def handle_event({:move, {:x, new_x}}, {y, _}) do 
+    {:ok, {new_x, y}}
+  end
+end
+
+defmodule WeaponComponent do 
+  use GenEvent
+
+  ### Public API
+  def list_weapons(entity) do 
+    :gen_event.call(entity, WeaponComponent, :list_weapons)
+  end
+  ### GenEvent API
+  def init(weapons) do 
+    {:ok, weapons}
+  end
+
+  def handle_event({:add_weapon, weapon}, weapons) do 
+    {:ok, weapons ++ [weapon]}
+  end
+
+  def handle_call(:list_weapons, weapons) do 
+    {:ok, weapons, weapons}
+  end
+end
 defmodule ZeldacatTest do
   use ExUnit.Case
 
@@ -67,5 +113,21 @@ defmodule ZeldacatTest do
     assert HealthComponent.get_hp(entity) == 0
     assert HealthComponent.alive?(entity) == false
 
+  end
+
+  test "something with an XYComponent can move around" do 
+    {:ok, entity} = Entity.init()
+    Entity.add_component(entity, XYComponent, {50,50})
+    Entity.notify(entity, {:move, {:y, 35}})
+    assert XYComponent.get_position(entity) == {50,35}
+  end
+
+  test "something with a WeaponComponent can manage a list of weapon" do 
+    {:ok, entity} = Entity.init()
+    Entity.add_component(entity, WeaponComponent, [])
+    Entity.notify(entity, {:add_weapon, "bat"})
+    assert WeaponComponent.list_weapons(entity) == ["bat"]
+    Entity.notify(entity, {:add_weapon, "screwdriver"})
+    assert WeaponComponent.list_weapons(entity) == ["bat", "screwdriver"]
   end
 end
